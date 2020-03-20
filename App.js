@@ -2,7 +2,16 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
-import MealsNavigator from './navigation/MealsNavigator'
+import MealsNavigator from './navigation/MealsNavigator';
+import { createStore, combineReducers } from 'redux';
+import mealsReducer from './store/reducers/meals';
+import { Provider } from 'react-redux';
+
+const rootReducer = combineReducers({
+  meal: mealsReducer
+})
+
+const store = createStore(rootReducer);
 
 export default class App extends Component {
 
@@ -21,6 +30,7 @@ export default class App extends Component {
     })
   }
 
+
   updateFontLoadedStatus = () => {
     this.setState({
       fontLoaded: true
@@ -29,15 +39,15 @@ export default class App extends Component {
 
   render() {
 
-    if(!this.state.fontLoaded) {
+    if (!this.state.fontLoaded) {
       return (
-        <AppLoading startAsync={this.fetchFonts} onFinish={this.updateFontLoadedStatus}/>
+        <AppLoading startAsync={this.fetchFonts} onFinish={this.updateFontLoadedStatus} />
       )
     }
 
 
     return (
-      <MealsNavigator />
+      <Provider store = {store}><MealsNavigator /></Provider>
     );
   }
 }

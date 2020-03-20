@@ -1,10 +1,9 @@
 import React from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
-import { MEALS } from '../data/test-data1';
 import MealCard from '../components/MealCard';
-import FilterScreen from './FiltersScreen';
 import ActionBarButton from '../components/ActionBarButton';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { useSelector } from 'react-redux'
 
 
 const FavoriteScreen = (props) => {
@@ -13,16 +12,16 @@ const FavoriteScreen = (props) => {
         props.navigation.navigate({
             routeName: 'MealDetails',
             params: {
-                mealId: item.id
+                mealId: item.id,
+                mealTitle: item.iconName
             }
         })
     }
 
-    const meals = MEALS.filter(
-        (meal) => {
-            return (meal.id === 'm1' || meal.id === 'm2')
-        }
-    )
+    const favoriteMeals = useSelector( (state) => {
+        return state.meal.favoriteMeals
+    } )
+
 
     const renderMeal = (itemData) => {
 
@@ -34,7 +33,7 @@ const FavoriteScreen = (props) => {
 
     return (
         <View style={styles.screen}>
-            <FlatList data={meals}
+            <FlatList data={favoriteMeals}
                 style={{ width: '100%' }}
                 renderItem={renderMeal} />
         </View>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { MEALCATEGORIES, MEALS } from '../data/test-data1';
-import meal from '../model/meal';
+import { useSelector } from 'react-redux'
 import MealCard from '../components/MealCard';
 
 const MealsScreen = (props) => {
@@ -16,7 +16,8 @@ const MealsScreen = (props) => {
         props.navigation.navigate({
             routeName: 'MealDetails',
             params: {
-                mealId: item.id
+                mealId: item.id,
+                mealTitle: item.name
             }
         })
     }
@@ -28,7 +29,11 @@ const MealsScreen = (props) => {
         )
     }
 
-    const meals = MEALS.filter(meal => meal.categoryIds.indexOf(categoryId) >= 0)
+    const availableMeals = useSelector( (state) => {
+        return state.meal.filteredMeals
+    } )
+
+    const meals = availableMeals.filter(meal => meal.categoryIds.indexOf(categoryId) >= 0)
 
     return (
         <View style={styles.screen}>
