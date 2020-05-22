@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, Switch, Platform } from 'react-native';
 import ActionBarButton from '../components/ActionBarButton';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { useDispatch } from 'react-redux';
+import { setFilters } from '../store/actions/meals';
 
 const FilterSwitch = (props) => {
     return (
@@ -32,6 +34,8 @@ const FilterScreen = (props) => {
     const [lactoseFree, setLactoseFree] = useState(false);
     const [vegetarian, setVegetarian] = useState(false);
 
+    const dispatch = useDispatch();
+
     const saveFilter = useCallback(() => {
         const saveFilter = {
             vegan: vegan,
@@ -39,8 +43,9 @@ const FilterScreen = (props) => {
             lactoseFree: lactoseFree,
             vegetarian: vegetarian
         }
-
-        console.log(saveFilter);
+        
+        dispatch(setFilters(saveFilter));
+        
     }, [vegetarian, vegan, lactoseFree, sugarFree,])
 
     useEffect(() => {

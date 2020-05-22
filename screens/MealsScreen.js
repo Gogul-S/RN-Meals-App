@@ -11,13 +11,15 @@ const MealsScreen = (props) => {
 
         return category.id === categoryId;
     })
-
+    const favoriteMeals = useSelector(state => state.meal.favoriteMeals)
     const mealClickHandler = (item) => {
+        const isFav = favoriteMeals.some( meal => meal.id === item.id )
         props.navigation.navigate({
             routeName: 'MealDetails',
             params: {
                 mealId: item.id,
-                mealTitle: item.name
+                mealTitle: item.name,
+                isFav: isFav
             }
         })
     }
